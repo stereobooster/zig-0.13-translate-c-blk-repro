@@ -38,5 +38,5 @@ if [ $rc_blk -ne 0 ] && [ $rc_quad -eq 0 ]; then
   echo "  => Bug reproduced: renaming the local from 'blk' to 'quad_ptr' fixes it."
   exit 0
 fi
-echo "  => Did not reproduce as expected (check your Zig version is 0.13.0)."
+echo "  => Did not reproduce as expected (expected on Zig 0.13-0.15; fixed in 0.16.0)."
 exit 1

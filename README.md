@@ -74,9 +74,22 @@ pointer addresses a 16-element "quad" block in the search.
 | `array_container_contains_quad_ptr.c` | Identical, local renamed `quad_ptr` — **the fix**. |
 | `reproduce.sh` | Runs `translate-c` + `ast-check` on both and prints a pass/fail summary. |
 
+## Affected versions
+
+Verified with `reproduce.sh` (target `wasm32-wasi`):
+
+| Zig version | `blk` (current header) | `quad_ptr` (fix) |
+|-------------|------------------------|------------------|
+| 0.13.0      | ❌ invalid Zig (`blk_1`) | ✅ |
+| 0.14.1      | ❌                      | ✅ |
+| 0.15.2      | ❌                      | ✅ |
+| 0.16.0      | ✅ (fixed upstream)      | ✅ |
+
+The bug is present in **0.13 through 0.15** and was **fixed in Zig 0.16.0**
+(its `translate-c` no longer mis-renames the variable reference). The rename
+still benefits consumers on 0.13–0.15.
+
 ## Notes
 
-- Reproduced with Zig `0.13.0`, target `wasm32-wasi`. The collision is
-  function-local; other targets that take the same scalar path behave the same.
-- Upstream Zig may have changed `translate-c`'s name-mangling in later versions;
-  this repro pins the version where CRoaring consumers actually hit it.
+- The collision is function-local; other targets taking the same scalar path
+  behave identically.
